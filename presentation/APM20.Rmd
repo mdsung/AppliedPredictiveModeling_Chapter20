@@ -4,7 +4,6 @@ author: "MinDong Sung"
 output: 
   ioslides_presentation:
     widescreen: true
-  beamer_presentation: defualt
 ---
 ```{r include = FALSE}
 library(AppliedPredictiveModeling)
