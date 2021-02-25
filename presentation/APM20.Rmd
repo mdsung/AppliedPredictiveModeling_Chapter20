@@ -2,14 +2,18 @@
 title: "20. 모델 성능에 영향을 미치는 요인"
 author: "MinDong Sung"
 output: 
-  beamer_presentation: defualt
   ioslides_presentation:
     widescreen: true
+  beamer_presentation: defualt
 ---
 ```{r include = FALSE}
 library(AppliedPredictiveModeling)
 library(tidyverse)
 ```
+<style>
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+</style>
+
 ## Overview
 
 * The Types of the Error or Noise
@@ -78,17 +82,21 @@ knitr::include_graphics("src/solubility_noise_rsquare.png")
   
   의 여러 요인에 따라 달라질 수 있다. 
 
-##
+## e.g. simulation data {.columns-2}
 
-* grey: original data
+
+
+* simulation data
+  + $y = sin(x), x \in [2, 10]$
+* grey: original data 
 * black: predicted data
 * red: predicted model
 
-<div style= "float:right; position:relative; top: -80px;">
-```{r pressure, echo = FALSE, out.width='40%'}
+<p class="forceBreak"></p>
+
+```{r echo = FALSE, out.width = '85%'}
 knitr::include_graphics('../figure/figure_20_3.png')
 ```
-</div>
 
 
 ## 20.4 연속형 결과를 이산화하기
@@ -121,8 +129,14 @@ knitr::include_graphics('src/bimodal_distribution.png')
 
 ### 연속형 결과를 이산화하는 경우 정보의 손실이 생긴다. 얼마나? 
 
-## 정보의 손실
-```{r echo = FALSE, out.width = '40%', out.height='40%'}
+## 정보의 손실 {.columns-2}
+* A: linear/logistic regression
+* B: SVM
+* C: random forest
+
+<p class="forceBreak"></p>
+
+```{r echo = FALSE, out.width = '85%', out.height='85%'}
 knitr::include_graphics('../figure/figure_20_6.png')
 ```
 
