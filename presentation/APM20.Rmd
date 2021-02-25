@@ -1,14 +1,14 @@
 ---
-title: "Chapter 20. 모델 성능에 영향을 미치는 요인"
+title: "20. 모델 성능에 영향을 미치는 요인"
 author: "MinDong Sung"
 output: 
+  beamer_presentation: defualt
   ioslides_presentation:
     widescreen: true
 ---
 ```{r include = FALSE}
 library(AppliedPredictiveModeling)
 library(tidyverse)
-data(solubility)
 ```
 ## Overview
 
@@ -52,8 +52,6 @@ cf.
 ## 20.2 결과의 측정 오차
 * 모델이 도달할 수 있는 최소 오차율?
 
-e.g. Linear regression model
-
 <center>
 $y_i = b_0 + b_1x_{i1} + b_2x_{i2} + \cdots + b_px_{ip} + e_i$
 </center>
@@ -62,32 +60,87 @@ $y_i = b_0 + b_1x_{i1} + b_2x_{i2} + \cdots + b_px_{ip} + e_i$
 * 최소오차(irreducible error) = 모델 오차 + 측정상의 오차 + $\sigma^2$
 
 ## e.g. Solubility dataset
-
-```{r, echo=FALSE, out.width="75%", fig.align = 'center'}
-knitr::include_graphics("src/solubility_data.png")
+```{r, echo=FALSE, out.width="40%", out.height = '40%', fig.align = 'default'}
+knitr::include_graphics("src/solubility_noise_rmse.png")
+knitr::include_graphics("src/solubility_noise_rsquare.png")
 ```
 
+1. 이런 유형의 잡음은 어떤 모델도 예측할 수 없음
+1. 잡음이 증가할수록 예측 성능 측면에서 사실상 모델을 구별하기 어려워질 것
+
+## 20.3 예측 변수에서의 측정 오차
+
+* 전통적 통계 모델 - 일반적으로 예측 변수에는 오차가 없을 것을 가정
+* 변수에 랜덤효과를 넣었을 때의 영향
+  - 랜덤 정도
+  - 변수 중요도
+  - 사용한 모델 유형 등
+  
+  의 여러 요인에 따라 달라질 수 있다. 
+
+##
+
+* grey: original data
+* black: predicted data
+* red: predicted model
+
+<div style= "float:right; position:relative; top: -80px;">
+```{r pressure, echo = FALSE, out.width='40%'}
+knitr::include_graphics('../figure/figure_20_3.png')
+```
+</div>
+
+
+## 20.4 연속형 결과를 이산화하기
+
+원래의 응답 변수가 연속형이더라도 이를 범주형 응답 변수화하기를 원함
+
+이유)
+
+1. 응답 변수의 내재된 분포가 실제로는 이정형태(bimodal distribution)
+
+## 실제 분포
+
+```{r echo = FALSE, out.width='50%', out.hegith='50%', fig.align = 'default'}
+knitr::include_graphics('src/solubility_distribution.png')
+knitr::include_graphics('src/bimodal_distribution.png')
+```
+
+## 20.4 연속형 결과를 이산화하기
+
+원래의 응답 변수가 연속형이더라도 이를 범주형 응답 변수화하기를 원함
+
+이유)
+
+1. 응답 변수의 내재된 분포가 실제로는 이정형태(bimodal distribution)
+1. 실질적인 이유
+    + 용해도의 경우 용해도의 실제적인 수치보다는 용해되는지 여부를 더 선호
+1. 연속형 변수의 경우 오차율이 높고, 분포의 극단값에 있는 응답 변수만 범주화 가능
+    + 3개의 범주로 나누고 중간범주는 모델 내에서 제거
+
+
+### 연속형 결과를 이산화하는 경우 정보의 손실이 생긴다. 얼마나? 
+
+## 정보의 손실
+```{r echo = FALSE, out.width = '40%', out.height='40%'}
+knitr::include_graphics('../figure/figure_20_6.png')
+```
 
 ## 20.5 언제 모델의 예측값을 믿어야 할까
 * 전제: 현재 존재하는 데이터를 만드는 방법과 동일한 방식으로 데이터를 계속 만들 것
 
-즉, 새 데이터에는 동일한 특성이 포함.
-모델이 만들어지는 데이터의 예측 공간의 유사한 부분을 차지할 것
-
-새 데이터가 훈련데이터 세트와 동일한 데이터 생성 과정을 통해 만들어졌다면 이 모델은 새 데이터에 대해서도 적합한 예측을 할 것
-
-아니라면? 
-외삽추정: 훈련 데이터 밖의 샘플을 모델을 사용해 예측하는 것
-
-최삽 추정에 대한 방향을 예측 변수 공간에서 이런 빈 내부 공ㅅ간을 포함하는 것으로 확장할 필요가 있다.
-
-## 
+* 새 데이터 데이터 생성 과정
+  - 훈련 데이터와 같은 방법 - 새 데이터에 대해서도 적합한 예측을 할 것
+  - 훈련 데이터와 다른 방법 
+      + 외삽추정: 훈련 데이터 밖의 샘플을 모델을 사용해 예측하는 것
+      + 외삽 추정에 대한 방향을 예측 변수 공간에서 이런 빈 내부 공간을 포함하는 것으로 확장할 필요가 있음
 
 ## 훈련데이터와 테스트 데이터의 유사성
 ### scatter plot(with PCA) or 변수간의 분포 파악
 - 예측변수가 별로 없는 데이터인 경우 
   
 ```{r echo = FALSE}
+data(solubility)
 pca <- solTrainX %>% prcomp(scale = TRUE)
 pca_train <- pca$x %>% 
   as.data.frame()
@@ -111,7 +164,7 @@ dplyr::bind_rows(list(train = pca_train, test = pca_test), .id = 'group') %>%
 
 예측에 사용할 새 데이터가 훈련 데이터와 충분히 유사하다면, 
 
-이 데이터 값은 모델 성능 추정값을 평균적으로 따를 것이라 가정
+이 데이터 값은 모델 성능 추정값(e.g. 정확도)을 평균적으로 따를 것이라 가정
 
 ## 훈련데이터와 테스트 데이터의 유사성
 
@@ -124,10 +177,15 @@ dplyr::bind_rows(list(train = pca_train, test = pca_test), .id = 'group') %>%
 1. 훈련 데이터 세트 클래스에 새 데이터가 속할 확률을 구하는 분류 모델을 만든다. 
 
 ##
-```{r}
-knitr::include_graphics('../figure/figure_20_8.pdf')
+```{r echo = FALSE, fig.align = 'center', out.width="50%", out.height='50%'}
+knitr::include_graphics('../figure/figure_20_8.png')
 ```
+
 ## 
+```{r echo = FALSE, fig.align = 'center', out.width = '45%', out.height = '45%'}
+knitr::include_graphics('../figure/figure_20_9.png')
+```
+
 ## 20.6 샘플이 클 때의 영향
 * 사전 가정: 샘플이 많을수록 더 좋은 모델을 만들 수 있다
 * 예측변수나 응답 변수에 잡음이 발생하면 샘플 수가 가져다주는 이점이 줄어든다. 

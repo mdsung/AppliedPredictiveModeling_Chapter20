@@ -40,10 +40,11 @@ create_distribution_similarity_plot <- function(testset){
     xlim(0, 1.5) + 
     theme(legend.position = c(0.8, 0.8))
   
-  p2 <- ggplot(testGroupProbs, aes(x = training, y=..count../sum(..count..))) + 
-    geom_histogram(binwidth = 0.1) +
-    xlim(0, 1) + 
+  p2 <- ggplot(testGroupProbs, aes(x = training)) + 
+    geom_histogram(aes(y=..count../sum(..count..)), binwidth = 0.1) +
+    xlim(-0.1, 1) + 
     xlab('training dataset similarity') + 
+    ylim(0, 1) + 
     ylab('Ratio') +
     theme_classic()
   
