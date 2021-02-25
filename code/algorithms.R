@@ -24,6 +24,7 @@ solTrainXimp <- subset(solTrainX, select = top20)
 solTestXimp <- subset(solTestX, select = top20)
 
 permutesolTrainXimp <- apply(solTrainXimp, 2, function(x) sample(x))
+
 solSimX <- rbind(solTrainXimp, permutesolTrainXimp)
 groupVals <- c('Training', 'Random')
 groupY <- factor(rep(groupVals), each = nrow(solTrainX))
